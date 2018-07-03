@@ -40,5 +40,6 @@ d <- readxl::read_xlsx('data/Raw data Phenotype_Full_July18.xlsx', sheet=1) %>%
   filter(!is.na(`MAP2K1-positive`)) %>%
   select(-`X__1`) %>%
   mutate(MAP2K_Status = ifelse(toupper(`MAP2K1-positive`)==`MAP2K1-positive`, 'Negative','Positive')) %>%
-  rename(ID = `MAP2K1-positive`)
+  rename(ID = `MAP2K1-positive`) %>%
+  mutate_at(vars(`Skeletal Burden (TV)`, TA, BSALP:DYPD), as.numeric)
 saveRDS(d, file = file.path('data', 'RawDataJuly18.rds'), compress = T)
