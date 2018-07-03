@@ -30,3 +30,15 @@ dat <- bind_rows(list('Positive'=tbl1,'Negative'=tbl2), .id='Status')
 
 saveRDS(dat, file=file.path('data','RawData.rds'), compress=TRUE)
 
+
+# New data with bone turnover markers ---------------------------------------------------------
+
+# devtools::install_github('nacnudus/unpivotr')
+library(unpivotr)
+
+d <- readxl::read_xlsx('data/Raw data Phenotype_Full_July18.xlsx', sheet=1) %>%
+  filter(!is.na(`MAP2K1-positive`)) %>%
+  select(-`X__1`) %>%
+  mutate(MAP2K_Status = ifelse(toupper(`MAP2K1-positive`)==`MAP2K1-positive`, 'Negative','Positive')) %>%
+  rename(ID = `MAP2K1-positive`)
+saveRDS(d, file = file.path('data', 'RawDataJuly18.rds'), compress = T)
